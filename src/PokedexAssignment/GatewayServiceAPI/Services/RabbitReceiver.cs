@@ -1,74 +1,54 @@
-﻿using RabbitMQ.Client;
+﻿using Models.Pokemon;
+using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
+using SharedLibary.Services;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 
 namespace GatewayServiceAPI.Services
 {
     public class RabbitReceiver
     {
-        //public void Receiver(string QueueName, ConnectionFactory factory)
-        //{
-        //    RabbitProducer rabbit = new RabbitProducer();
+        public string Receiver(string QueueName, ConnectionFactory factory)
+        {
+            RabbitProducer rabbit = new RabbitProducer();
+            string result = string.Empty;
 
-        //    Console.WriteLine("Listening on queue: " + QueueName + "...");
+            Console.WriteLine("Listening on queue: " + QueueName + "...");
 
-        //    using (var connection = factory.CreateConnection())
-        //    using (var channel = connection.CreateModel())
-        //    {
-        //        channel.QueueDeclare(
-        //            queue: QueueName,
-        //            durable: true,
-        //            exclusive: false,
-        //            autoDelete: false,
-        //            arguments: null);
+            using (var connection = factory.CreateConnection())
+            using (var channel = connection.CreateModel())
+            {
+                channel.QueueDeclare(
+                    queue: QueueName,
+                    durable: true,
+                    exclusive: false,
+                    autoDelete: false,
+                    arguments: null);
 
-        //        var consumer = new EventingBasicConsumer(channel);
-        //        consumer.Received += (sender, e) =>
-        //        {
-        //            var body = e.Body.ToArray();
-        //            var message = Encoding.UTF8.GetString(body);
-        //            Console.WriteLine(message);
+                var consumer = new EventingBasicConsumer(channel);
+                consumer.Received += (sender, e) =>
+                {
+                    var body = e.Body.ToArray();
+                    var message = Encoding.UTF8.GetString(body);
+                    Console.WriteLine("Message: " + message);
 
-        //            // Async method, that runs the queue to the database, that needs to be inside a try except.
-        //            // If the request can not be made to the database, then wait 5 seconds and then add the rabbitmq request again.
-
-        //            if (QueueName == "Get")
-        //            {
-        //                rabbit.Producer("GetResponse", , factory); //Adds the unsuccesful insertion's object back into rabbitmq
-
-                       
-        //            }
-        //            else if (QueueName == "Payment" || QueueName == "Invoice" || QueueName == "OrderGenerated" || QueueName == "OrderReady")
-        //            {
-        //                int productOrderId = JsonSerializer.Deserialize<int>(message);
-        //                if (!dataAccess.ChangeOrderStatus(productOrderId, QueueName))
-        //                {
-        //                    rabbit.Producer(QueueName, productOrderId, factory); //Adds the unsuccesful insertion's object back into rabbitmq
-        //                    Thread.Sleep(10000);
-        //                }
-        //                else
-        //                {
-        //                    rabbit.Producer("EmailSend", productOrderId, factory);
-        //                }
-        //            }
-        //            else if (QueueName == "EmailSend")
-        //            {
-        //                int productOrderId = JsonSerializer.Deserialize<int>(message);
-
-        //                emailHandler.CheckOrderComplete(productOrderId);
-        //            }
-        //        };
+                if (QueueName == "GetResponse")
+                    {
+                        result = message;
+                    }
+                };
 
 
-        //        channel.BasicConsume(queue: QueueName, true, consumer);
+                channel.BasicConsume(queue: QueueName, true, consumer);
 
-        //        Thread.Sleep(Timeout.Infinite);
-
-        //    }
-        //}
+                while (string.IsNullOrEmpty(result))
+                {
+                    Thread.Sleep(3000);
+                }
+                return result;
+            }
+        }
     }
 }

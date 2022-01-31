@@ -29,6 +29,7 @@ namespace GatewayServiceAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddTransient<RabbitProducer>();
+            services.AddTransient<RabbitReceiver>();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {

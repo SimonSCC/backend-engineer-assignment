@@ -1,5 +1,6 @@
 ﻿using PokedexService.Services;
 using RabbitMQ.Client;
+using SharedLibary.Services;
 using System;
 using System.Threading;
 
@@ -14,7 +15,7 @@ namespace PokedexService
             ConnectionFactory factory = new ConnectionFactory
             {
                 //Uri = new Uri("amqp://guest:guest@localhost:15672"), //amqp is the protocol hosted on port 5672 in docker. like website using https protocol https://
-                HostName = "192.168.0.46"
+                HostName = ConnectionManager.RabbitMQIpAddress
 
                 //Uri = new Uri("amqp://guest:guest@rabbitmq:15672"),
             };

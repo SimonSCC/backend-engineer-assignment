@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Models.Pokemon;
+using Newtonsoft.Json;
 using SharedLibary.Services;
 using System;
 using System.Collections.Generic;
@@ -15,17 +16,20 @@ namespace GatewayServiceAPI.Controllers
     public class GatewayAPIController : ControllerBase
     {
         private readonly RabbitProducer rabbitProd;
+        private readonly RabbitReceiver rabbitReceiver;
 
-        public GatewayAPIController(RabbitProducer rabbitProd)
+        public GatewayAPIController(RabbitProducer rabbitProd, RabbitReceiver rabbitReceiver)
         {
             this.rabbitProd = rabbitProd;
-
+            this.rabbitReceiver = rabbitReceiver;
         }
         [HttpGet]
         public PokedexEntry Get(int id)
         {
-            rabbitProd.Producer("Get", id.ToString(), new RabbitMQ.Client.ConnectionFactory() { HostName = "192.168.0.46" });
-            return new() { Type = new() { "testPoke" } };
+            rabbitProd.Producer("Get", id, new RabbitMQ.Client.ConnectionFactory() { HostName = ConnectionManager.RabbitMQIpAddress });
+            PokedexEntry result = JsonConvert.DeserializeObject<PokedexEntry>(rabbitReceiver.Receiver("GetResponse", new RabbitMQ.Client.ConnectionFactory()
+            { HostName = ConnectionManager.RabbitMQIpAddress }));
+            return result;
         }
 
 
