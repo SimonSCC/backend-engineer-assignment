@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "PokedexService": {
+      "commandName": "Project"
+    },
+    "Docker": {
+      "commandName": "Docker"
+    }
+  }
+}

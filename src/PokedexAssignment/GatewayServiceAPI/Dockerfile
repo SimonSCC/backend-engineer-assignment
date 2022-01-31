@@ -8,6 +8,7 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 WORKDIR /src
 COPY ["GatewayServiceAPI/GatewayServiceAPI.csproj", "GatewayServiceAPI/"]
+COPY ["SharedLibary/SharedLibary.csproj", "SharedLibary/"]
 RUN dotnet restore "GatewayServiceAPI/GatewayServiceAPI.csproj"
 COPY . .
 WORKDIR "/src/GatewayServiceAPI"

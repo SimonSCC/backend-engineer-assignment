@@ -1,4 +1,6 @@
-﻿using System;
+﻿using SharedLibary.Services;
+using System;
+using System.Threading.Tasks;
 
 namespace ClientApp
 {
@@ -6,7 +8,14 @@ namespace ClientApp
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            Program pr = new();
+            pr.RunClient().Wait();
+        }
+
+        private async Task RunClient()
+        {
+            HTTPServices http = new();
+            Console.WriteLine(await http.GETModel("https://localhost:44328/GatewayAPI?id=1"));
         }
     }
 }

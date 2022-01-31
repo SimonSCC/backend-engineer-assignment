@@ -1,0 +1,11 @@
+services:
+  clientapp:
+    build:
+      context: C:\Users\Simon\source\repos\backend-engineer-assignment\src\PokedexAssignment
+      dockerfile: ClientApp/Dockerfile
+    image: clientapp
+    networks:
+      default: null
+networks:
+  default:
+    name: dockercompose11863284655356176117_default

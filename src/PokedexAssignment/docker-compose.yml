@@ -1,0 +1,31 @@
+version: '3.4'
+
+services:
+   rabbitmq:
+     container_name: rabbitmq
+     image: rabbitmq:3-management
+     ports:
+      - "5672:5672"
+      - "15672:15672"
+     environment:
+        TZ: "Europe/Copenhagen"
+
+   clientapp:
+    image: ${DOCKER_REGISTRY-}clientapp
+    build:
+        context: .
+        dockerfile: ClientApp/Dockerfile
+
+   gatewayserviceapi:
+    image: ${DOCKER_REGISTRY-}gatewayserviceapi
+    build:
+        context: .
+        dockerfile: GatewayServiceAPI/Dockerfile
+
+
+   pokedexservice:
+    image: ${DOCKER_REGISTRY-}pokedexservice
+    build:
+        context: .
+        dockerfile: PokedexService/Dockerfile
+
