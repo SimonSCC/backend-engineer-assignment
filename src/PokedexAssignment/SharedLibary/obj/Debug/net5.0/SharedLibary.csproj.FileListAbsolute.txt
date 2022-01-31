@@ -1,0 +1,12 @@
+C:\Users\Simon\source\repos\backend-engineer-assignment\src\PokedexAssignment\SharedLibary\bin\Debug\net5.0\SharedLibary.deps.json
+C:\Users\Simon\source\repos\backend-engineer-assignment\src\PokedexAssignment\SharedLibary\bin\Debug\net5.0\SharedLibary.dll
+C:\Users\Simon\source\repos\backend-engineer-assignment\src\PokedexAssignment\SharedLibary\bin\Debug\net5.0\ref\SharedLibary.dll
+C:\Users\Simon\source\repos\backend-engineer-assignment\src\PokedexAssignment\SharedLibary\bin\Debug\net5.0\SharedLibary.pdb
+C:\Users\Simon\source\repos\backend-engineer-assignment\src\PokedexAssignment\SharedLibary\obj\Debug\net5.0\SharedLibary.csproj.AssemblyReference.cache
+C:\Users\Simon\source\repos\backend-engineer-assignment\src\PokedexAssignment\SharedLibary\obj\Debug\net5.0\SharedLibary.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Simon\source\repos\backend-engineer-assignment\src\PokedexAssignment\SharedLibary\obj\Debug\net5.0\SharedLibary.AssemblyInfoInputs.cache
+C:\Users\Simon\source\repos\backend-engineer-assignment\src\PokedexAssignment\SharedLibary\obj\Debug\net5.0\SharedLibary.AssemblyInfo.cs
+C:\Users\Simon\source\repos\backend-engineer-assignment\src\PokedexAssignment\SharedLibary\obj\Debug\net5.0\SharedLibary.csproj.CoreCompileInputs.cache
+C:\Users\Simon\source\repos\backend-engineer-assignment\src\PokedexAssignment\SharedLibary\obj\Debug\net5.0\SharedLibary.dll
+C:\Users\Simon\source\repos\backend-engineer-assignment\src\PokedexAssignment\SharedLibary\obj\Debug\net5.0\ref\SharedLibary.dll
+C:\Users\Simon\source\repos\backend-engineer-assignment\src\PokedexAssignment\SharedLibary\obj\Debug\net5.0\SharedLibary.pdb

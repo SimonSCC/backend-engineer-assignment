@@ -1,6 +1,8 @@
 ﻿
 using System;
 using System.Net.Http;
+using System.Net.Security;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 
 namespace SharedLibary.Services
@@ -11,9 +13,14 @@ namespace SharedLibary.Services
 
         public HTTPServices()
         {
-            ApiClient = new HttpClient();
+            HttpClientHandler handler = new();
+            handler.ServerCertificateCustomValidationCallback = VerifySSL;
+            ApiClient = new HttpClient(handler);
         }
-
+        private bool VerifySSL(HttpRequestMessage requestMessage, X509Certificate2 certificate, X509Chain chain, SslPolicyErrors sslErrors)
+        {
+            return true;
+        }
 
 
         public async Task<string> GETModel(string url)

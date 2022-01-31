@@ -1,15 +1,6 @@
 version: '3.4'
 
 services:
-   rabbitmq:
-     container_name: rabbitmq
-     image: rabbitmq:3-management
-     ports:
-      - "5672:5672"
-      - "15672:15672"
-     environment:
-        TZ: "Europe/Copenhagen"
-
    clientapp:
     image: ${DOCKER_REGISTRY-}clientapp
     build:
@@ -18,6 +9,8 @@ services:
 
    gatewayserviceapi:
     image: ${DOCKER_REGISTRY-}gatewayserviceapi
+    ports:
+      - "80:80"
     build:
         context: .
         dockerfile: GatewayServiceAPI/Dockerfile
