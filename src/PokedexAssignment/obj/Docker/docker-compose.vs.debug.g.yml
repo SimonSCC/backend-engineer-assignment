@@ -3,7 +3,7 @@ version: '3.4'
 services:
   gatewayserviceapi:
     image: gatewayserviceapi:dev
-    container_name: GatewayServiceAPI_1
+    container_name: GatewayServiceAPI
     build:
       target: base
       labels:

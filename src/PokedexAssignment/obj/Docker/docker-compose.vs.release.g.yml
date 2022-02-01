@@ -2,7 +2,7 @@ version: '3.4'
 
 services:
   gatewayserviceapi:
-    container_name: GatewayServiceAPI_1
+    container_name: GatewayServiceAPI
     build:
       labels:
         com.microsoft.created-by: "visual-studio"
