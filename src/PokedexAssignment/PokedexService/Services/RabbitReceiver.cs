@@ -11,9 +11,8 @@ namespace PokedexService.Services
 {
     public class RabbitReceiver
     {
-        public void Receiver(string QueueName, ConnectionFactory factory)
+        public void Receiver(string QueueName, ConnectionFactory factory, Action<string> handleEvent)
         {
-            RabbitProducer rabbit = new RabbitProducer();
 
             Console.WriteLine("Listening on queue: " + QueueName + "...");
 
@@ -33,17 +32,8 @@ namespace PokedexService.Services
                     var body = e.Body.ToArray();
                     var message = Encoding.UTF8.GetString(body);
                     Console.WriteLine("Message: " + message);
-
-                if (QueueName == "Get")
-                    {
-                        int.TryParse(message.ToString(), out int result);
-                        using (PostGreConn conn = new())
-                        {
-                            rabbit.Producer("GetResponse", conn.GetPokedexEntryById(result), factory);
-                        }
-                    }
+                    handleEvent(message);
                 };
-
 
                 channel.BasicConsume(queue: QueueName, true, consumer);
 

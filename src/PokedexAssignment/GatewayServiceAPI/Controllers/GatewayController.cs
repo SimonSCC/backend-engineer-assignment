@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Models.Pokemon;
 using Newtonsoft.Json;
+using RabbitMQ.Client;
 using SharedLibary.Services;
 using System;
 using System.Collections.Generic;
@@ -26,29 +27,29 @@ namespace GatewayServiceAPI.Controllers
         [HttpGet]
         public PokedexEntry Get(int id)
         {
-            rabbitProd.Producer("Get", id, new RabbitMQ.Client.ConnectionFactory() { HostName = ConnectionManager.RabbitMQIpAddress });
-            PokedexEntry result = JsonConvert.DeserializeObject<PokedexEntry>(rabbitReceiver.Receiver("GetResponse", new RabbitMQ.Client.ConnectionFactory()
+            rabbitProd.Producer("Get", id, new ConnectionFactory() { HostName = ConnectionManager.RabbitMQIpAddress });
+            PokedexEntry result = JsonConvert.DeserializeObject<PokedexEntry>(rabbitReceiver.Receiver("GetResponse", new ConnectionFactory()
             { HostName = ConnectionManager.RabbitMQIpAddress }));
             return result;
         }
 
 
         [HttpPost]
-        public bool Post(PokedexEntry entry)
+        public void Post(PokedexEntry entry)
         {
-            return false;
+            rabbitProd.Producer("Post", entry, new ConnectionFactory() { HostName = ConnectionManager.RabbitMQIpAddress });
         }
 
         [HttpPut]
-        public bool Put(PokedexEntry entry)
+        public void Put(PokedexEntry entry)
         {
-            return true;
+            rabbitProd.Producer("Put", entry, new ConnectionFactory() { HostName = ConnectionManager.RabbitMQIpAddress });
         }
 
         [HttpDelete]
-        public bool Delete(int id)
+        public void Delete(int id)
         {
-            return true;
+            rabbitProd.Producer("Delete", id, new ConnectionFactory() { HostName = ConnectionManager.RabbitMQIpAddress });
         }
     }
 }

@@ -18,7 +18,7 @@ namespace PokedexService.DataAccess
 
         public PostGreConn()
         {
-            connection = new($"Server=192.168.0.35;Port=5432;Database=PokeDex;User Id=postgres;password=discotek;");
+            connection = new($"Server={ConnectionManager.PostgreSQLLocalhostDatabase};Port=5432;Database=PokeDex;User Id=postgres;password=discotek;");
         }
 
         public void TestConnection()

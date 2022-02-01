@@ -9,6 +9,7 @@ namespace SharedLibary.Services
     public static class ConnectionManager
     {
         public static string RabbitMQIpAddress = "192.168.0.46";
+        public static string PostgreSQLLocalhostDatabase = "192.168.0.35";
     }
 
 }
