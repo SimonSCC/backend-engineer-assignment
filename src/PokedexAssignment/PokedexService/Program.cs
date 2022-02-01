@@ -1,4 +1,5 @@
-﻿using PokedexService.Services;
+﻿using PokedexService.DataAccess;
+using PokedexService.Services;
 using RabbitMQ.Client;
 using SharedLibary.Services;
 using System;
@@ -10,14 +11,15 @@ namespace PokedexService
     {
         static void Main(string[] args)
         {
+            //Uncomment to insert all pokedex entries from json file
+            //using (PostGreConn conn = new())
+            //conn.InsertAllPokedexEntries();
+
             Console.WriteLine("Starting pokedex service");
             Thread.Sleep(12000);
             ConnectionFactory factory = new ConnectionFactory
             {
-                //Uri = new Uri("amqp://guest:guest@localhost:15672"), //amqp is the protocol hosted on port 5672 in docker. like website using https protocol https://
                 HostName = ConnectionManager.RabbitMQIpAddress
-
-                //Uri = new Uri("amqp://guest:guest@rabbitmq:15672"),
             };
             RabbitReceiver receiver = new();
             receiver.Receiver("Get", factory);

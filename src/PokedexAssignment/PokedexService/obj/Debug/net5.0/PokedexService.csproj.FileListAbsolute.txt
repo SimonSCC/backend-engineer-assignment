@@ -19,3 +19,6 @@ C:\Users\Simon\source\repos\backend-engineer-assignment\src\PokedexAssignment\Po
 C:\Users\Simon\source\repos\backend-engineer-assignment\src\PokedexAssignment\PokedexService\bin\Debug\net5.0\SharedLibary.dll
 C:\Users\Simon\source\repos\backend-engineer-assignment\src\PokedexAssignment\PokedexService\bin\Debug\net5.0\SharedLibary.pdb
 C:\Users\Simon\source\repos\backend-engineer-assignment\src\PokedexAssignment\PokedexService\obj\Debug\net5.0\PokedexService.csproj.CopyComplete
+C:\Users\Simon\source\repos\backend-engineer-assignment\src\PokedexAssignment\PokedexService\bin\Debug\net5.0\Npgsql.dll
+C:\Users\Simon\source\repos\backend-engineer-assignment\src\PokedexAssignment\PokedexService\bin\Debug\net5.0\System.Runtime.CompilerServices.Unsafe.dll
+C:\Users\Simon\source\repos\backend-engineer-assignment\src\PokedexAssignment\PokedexService\bin\Debug\net5.0\pokedex.json

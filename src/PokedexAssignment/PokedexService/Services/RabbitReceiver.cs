@@ -1,4 +1,5 @@
 ﻿using Models.Pokemon;
+using PokedexService.DataAccess;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using SharedLibary.Services;
@@ -33,14 +34,13 @@ namespace PokedexService.Services
                     var message = Encoding.UTF8.GetString(body);
                     Console.WriteLine("Message: " + message);
 
-                // Async method, that runs the queue to the database, that needs to be inside a try except.
-                // If the request can not be made to the database, then wait 5 seconds and then add the rabbitmq request again.
-
                 if (QueueName == "Get")
                     {
                         int.TryParse(message.ToString(), out int result);
-                        PokedexEntry entry = new PokedexEntry() { Name = new() { English = "Pokemon1" }, Id = result};
-                        rabbit.Producer("GetResponse", entry, factory);
+                        using (PostGreConn conn = new())
+                        {
+                            rabbit.Producer("GetResponse", conn.GetPokedexEntryById(result), factory);
+                        }
                     }
                 };
 

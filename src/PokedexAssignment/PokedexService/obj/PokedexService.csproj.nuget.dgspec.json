@@ -56,6 +56,10 @@
               "target": "Package",
               "version": "[1.11.1, )"
             },
+            "Npgsql": {
+              "target": "Package",
+              "version": "[6.0.3, )"
+            },
             "RabbitMQ.Client": {
               "target": "Package",
               "version": "[6.2.2, )"

@@ -29,3 +29,6 @@ C:\Users\Simon\source\repos\backend-engineer-assignment\src\PokedexAssignment\ob
 C:\Users\Simon\source\repos\backend-engineer-assignment\src\PokedexAssignment\obj\Debug\docker-compose.dcproj.CopyComplete
 C:\Users\Simon\source\repos\backend-engineer-assignment\src\PokedexAssignment\bin\Debug\RabbitMQ.Client.dll
 C:\Users\Simon\source\repos\backend-engineer-assignment\src\PokedexAssignment\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Simon\source\repos\backend-engineer-assignment\src\PokedexAssignment\bin\Debug\pokedex.json
+C:\Users\Simon\source\repos\backend-engineer-assignment\src\PokedexAssignment\bin\Debug\Npgsql.dll
+C:\Users\Simon\source\repos\backend-engineer-assignment\src\PokedexAssignment\bin\Debug\System.Runtime.CompilerServices.Unsafe.dll

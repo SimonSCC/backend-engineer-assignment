@@ -18,6 +18,7 @@ services:
 
    pokedexservice:
     image: ${DOCKER_REGISTRY-}pokedexservice
+    network_mode: host
     build:
         context: .
         dockerfile: PokedexService/Dockerfile
