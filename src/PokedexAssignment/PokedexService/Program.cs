@@ -1,4 +1,6 @@
-﻿using PokedexService.DataAccess;
+﻿using Models.Pokemon;
+using Newtonsoft.Json;
+using PokedexService.DataAccess;
 using PokedexService.Services;
 using RabbitMQ.Client;
 using SharedLibary.Services;
@@ -13,14 +15,12 @@ namespace PokedexService
         private ConnectionFactory standardConnectionFac;
         static void Main(string[] args)
         {
-            //Uncomment to insert all pokedex entries from json file
+            ////Uncomment to insert all pokedex entries from json file
             //using (PostGreConn conn = new())
-            //conn.InsertAllPokedexEntries();
+            //    conn.InsertAllPokedexEntries().Wait();
 
             Program pr = new();
             pr.RunProgram(Environment.GetEnvironmentVariable("VAR1"));
-
-
         }
 
         private void RunProgram(string variable)
@@ -43,6 +43,12 @@ namespace PokedexService
                     break;
                 case "delete":
                     receiver.Receiver("Delete", standardConnectionFac, HandleDeleteRequest);
+                    break;
+                case "post":
+                    receiver.Receiver("Post", standardConnectionFac, HandlePostRequest);
+                    break;
+                case "put":
+                    receiver.Receiver("Put", standardConnectionFac, HandlePutRequest);
                     break;
                 default:
                     Console.WriteLine("No argument was provided. Please provide which queue program should handle!");
@@ -67,6 +73,26 @@ namespace PokedexService
             using (PostGreConn conn = new())
             {
                 rabbitProd.Producer("GetResponse", conn.GetPokedexEntryById(result), standardConnectionFac);
+            }
+        }
+
+        public void HandlePostRequest(string message)
+        {
+            PokedexEntry result = JsonConvert.DeserializeObject<PokedexEntry>(message);
+            Console.WriteLine($"Posting: \n {result}");
+            using (PostGreConn conn = new())
+            {
+                conn.PostNewPokedex(result).Wait();
+            }
+        }
+
+        public void HandlePutRequest(string message)
+        {
+            PokedexEntry result = JsonConvert.DeserializeObject<PokedexEntry>(message);
+            Console.WriteLine($"Updating record to: \n{result}");
+            using (PostGreConn conn = new())
+            {
+                conn.UpdatePokedexEntry(result).Wait();
             }
         }
     }

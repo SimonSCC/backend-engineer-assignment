@@ -18,7 +18,12 @@ namespace ClientApp
         private async Task RunClient()
         {
             HTTPServices http = new();
-            Console.WriteLine(await http.GETModel("https://192.168.0.46:57711/GatewayAPI?id=1"));
+
+            for (int i = 0; i < 100; i++)
+            {
+                Thread.Sleep(2500);
+                Console.WriteLine(await http.GETModel("https://192.168.0.46:57711/GatewayAPI?id=1"));
+            }
 
         }
     }

@@ -32,5 +32,23 @@ services:
         dockerfile: PokedexService/Dockerfile
      environment: 
         VAR1: "delete"
+
+   pokedexservicepost:
+     container_name: postPokedex
+     network_mode: host
+     build:
+        context: .
+        dockerfile: PokedexService/Dockerfile
+     environment: 
+        VAR1: "post"
+       
+   pokedexserviceput:
+     container_name: putPokedex
+     network_mode: host
+     build:
+        context: .
+        dockerfile: PokedexService/Dockerfile
+     environment: 
+        VAR1: "put"
        
 

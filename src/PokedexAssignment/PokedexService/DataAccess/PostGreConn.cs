@@ -107,6 +107,106 @@ namespace PokedexService.DataAccess
             }
         }
 
+        public async Task UpdatePokedexEntry(PokedexEntry result)
+        {
+            try
+            {
+                connection.Open();
+                using (NpgsqlCommand cmd = new NpgsqlCommand($"update pokedexentry SET SerializedTypes = @serializedtypes WHERE EntryId = @entryid", connection))
+                {
+                    var parameter = cmd.CreateParameter();
+                    parameter.ParameterName = "serializedtypes";
+                    parameter.Value = SerializeType(result.Type);
+                    cmd.Parameters.Add(parameter);
+
+                    var parameter1 = cmd.CreateParameter();
+                    parameter1.ParameterName = "entryid";
+                    parameter1.Value = result.Id;
+                    cmd.Parameters.Add(parameter1);
+
+                    await cmd.ExecuteNonQueryAsync();
+                }
+
+                using (NpgsqlCommand cmd = new NpgsqlCommand($"update pokemonbase " +
+                    $"SET HP = @hp, Attack = @attack, Defense = @defense, SpAttack = @spattack, SpDefense = @spdefence, Speed = @speed WHERE PokemonId = @pokemonid", connection))
+                {
+                    var parameter = cmd.CreateParameter();
+                    parameter.ParameterName = "hp";
+                    parameter.Value = result.Base.HP;
+                    cmd.Parameters.Add(parameter);
+
+                    var parameter1 = cmd.CreateParameter();
+                    parameter1.ParameterName = "attack";
+                    parameter1.Value = result.Base.Attack;
+                    cmd.Parameters.Add(parameter1);
+
+                    var parameter2 = cmd.CreateParameter();
+                    parameter2.ParameterName = "defense";
+                    parameter2.Value = result.Base.Defense;
+                    cmd.Parameters.Add(parameter2);
+
+                    var parameter3 = cmd.CreateParameter();
+                    parameter3.ParameterName = "spattack";
+                    parameter3.Value = result.Base.SpAttack;
+                    cmd.Parameters.Add(parameter3);
+
+                    var parameter4 = cmd.CreateParameter();
+                    parameter4.ParameterName = "spdefence";
+                    parameter4.Value = result.Base.SpDefense;
+                    cmd.Parameters.Add(parameter4);
+
+                    var parameter5 = cmd.CreateParameter();
+                    parameter5.ParameterName = "speed";
+                    parameter5.Value = result.Base.Speed;
+                    cmd.Parameters.Add(parameter5);
+
+                    await cmd.ExecuteNonQueryAsync();
+                }
+
+                using (NpgsqlCommand cmd = new NpgsqlCommand($"update pokemonname " +
+                   $"SET English = @english, Japanese = @japanese, Chinese = @chinese, French = @french WHERE NameId = @nameid", connection))
+                {
+                    var parameter = cmd.CreateParameter();
+                    parameter.ParameterName = "english";
+                    parameter.Value = result.Name.English;
+                    cmd.Parameters.Add(parameter);
+
+                    var parameter1 = cmd.CreateParameter();
+                    parameter1.ParameterName = "japanese";
+                    parameter1.Value = result.Name.Japanese;
+                    cmd.Parameters.Add(parameter1);
+
+                    var parameter2 = cmd.CreateParameter();
+                    parameter2.ParameterName = "chinese";
+                    parameter2.Value = result.Name.Chinese;
+                    cmd.Parameters.Add(parameter2);
+
+                    var parameter3 = cmd.CreateParameter();
+                    parameter3.ParameterName = "french";
+                    parameter3.Value = result.Name.French;
+                    cmd.Parameters.Add(parameter3);
+
+                    await cmd.ExecuteNonQueryAsync();
+                }
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            finally
+            {
+                await connection.CloseAsync();
+            }
+        }
+
+        public async Task PostNewPokedex(PokedexEntry result)
+        {
+            int pokemonBaseId = (int)await InsertBasePokemon(result.Base);
+            int pokemonNameId = (int)await InsertPokemonName(result.Name);
+            await InsertPokedexEntry(result, pokemonBaseId, pokemonNameId);
+        }
+
         private PokemonBase GetPokemonBaseById(int id)
         {
             using (NpgsqlCommand cmd = new NpgsqlCommand($"select * from pokemonbase WHERE PokemonId = {id}", connection))
@@ -166,25 +266,22 @@ namespace PokedexService.DataAccess
             return null;
         }
 
-        public void InsertAllPokedexEntries()
+        public async Task InsertAllPokedexEntries()
         {
             string jsonText = File.ReadAllText("./pokedex.json");
             List<PokedexEntry> list = JsonConvert.DeserializeObject<List<PokedexEntry>>(jsonText);
 
             foreach (PokedexEntry entry in list)
             {
-                int pokemonBaseId = (int)InsertBasePokemon(entry.Base);
-                int pokemonNameId = (int)InsertPokemonName(entry.Name);
-                InsertPokedexEntry(entry, pokemonBaseId, pokemonNameId);
-
+                await PostNewPokedex(entry);
             }
         }
 
-        private bool InsertPokedexEntry(PokedexEntry entry, int pokemonBaseId, int pokemonNameId)
+        private async Task<bool> InsertPokedexEntry(PokedexEntry entry, int pokemonBaseId, int pokemonNameId)
         {
             try
             {
-                connection.Open();
+                await connection.OpenAsync();
                 using (NpgsqlCommand cmd = new NpgsqlCommand("INSERT INTO pokedexentry (NameId, SerializedTypes, PokemonBaseId)" +
                     "VALUES (@nameid, @serializedtypes, @pokemonbaseid)", connection))
                 {
@@ -203,7 +300,7 @@ namespace PokedexService.DataAccess
                     parameter3.Value = pokemonBaseId;
                     cmd.Parameters.Add(parameter3);
 
-                    if (cmd.ExecuteNonQuery() > 0)
+                    if (await cmd.ExecuteNonQueryAsync() > 0)
                         return true;
                     else return false;
                 }
@@ -215,7 +312,7 @@ namespace PokedexService.DataAccess
             }
             finally
             {
-                connection.Close();
+                await connection.CloseAsync();
             }
         }
 
@@ -229,11 +326,11 @@ namespace PokedexService.DataAccess
             return result.Substring(0, result.Length - 2);
         }
 
-        private object InsertPokemonName(Name entry)
+        private async Task<object> InsertPokemonName(Name entry)
         {
             try
             {
-                connection.Open();
+                await connection.OpenAsync();
                 using (NpgsqlCommand cmd = new NpgsqlCommand("INSERT INTO pokemonname (English, Japanese, Chinese, French)" +
                     "VALUES (@english, @japanese, @chinese, @french) RETURNING NameId", connection))
                 {
@@ -258,7 +355,7 @@ namespace PokedexService.DataAccess
                     cmd.Parameters.Add(parameter4);
 
 
-                    return cmd.ExecuteScalar();
+                    return await cmd.ExecuteScalarAsync();
                 }
             }
             catch (Exception e)
@@ -268,15 +365,15 @@ namespace PokedexService.DataAccess
             }
             finally
             {
-                connection.Close();
+                await connection.CloseAsync();
             }
         }
 
-        private object InsertBasePokemon(PokemonBase entry)
+        private async Task<object> InsertBasePokemon(PokemonBase entry)
         {
             try
             {
-                connection.Open();
+                await connection.OpenAsync();
                 using (NpgsqlCommand cmd = new NpgsqlCommand("INSERT INTO pokemonbase (HP,Attack,Defense,SpAttack,SpDefense,Speed)" +
                     "VALUES (@hp, @attack, @defense, @spattack, @spdefense, @speed) RETURNING PokemonId", connection))
                 {
@@ -310,7 +407,7 @@ namespace PokedexService.DataAccess
                     parameter6.Value = entry.Speed;
                     cmd.Parameters.Add(parameter6);
 
-                    return cmd.ExecuteScalar();
+                    return await cmd.ExecuteScalarAsync();
                 }
             }
             catch (Exception e)
@@ -320,9 +417,8 @@ namespace PokedexService.DataAccess
             }
             finally
             {
-                connection.Close();
+                await connection.CloseAsync();
             }
-
         }
 
         public void Dispose()
