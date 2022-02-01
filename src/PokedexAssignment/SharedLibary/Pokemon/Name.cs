@@ -8,6 +8,7 @@ namespace Models.Pokemon
 {
     public class Name
     {
+        public int Id { get; set; }
         public string English { get; set; }
         public string Japanese { get; set; }
         public string Chinese { get; set; }

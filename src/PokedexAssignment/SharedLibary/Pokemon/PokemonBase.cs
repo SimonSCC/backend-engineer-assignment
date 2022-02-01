@@ -8,6 +8,7 @@ namespace Models.Pokemon
 { 
     public class PokemonBase
     {
+        public int Id { get; set; }
         public int HP { get; set; }
         public int Attack { get; set; }
         public int Defense { get; set; }

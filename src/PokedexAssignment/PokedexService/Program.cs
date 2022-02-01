@@ -16,13 +16,14 @@ namespace PokedexService
             //Uncomment to insert all pokedex entries from json file
             //using (PostGreConn conn = new())
             //conn.InsertAllPokedexEntries();
+
             Program pr = new();
-            pr.RunProgram();
+            pr.RunProgram(Environment.GetEnvironmentVariable("VAR1"));
 
 
         }
 
-        private void RunProgram()
+        private void RunProgram(string variable)
         {
             rabbitProd = new RabbitProducer();
 
@@ -33,15 +34,31 @@ namespace PokedexService
                 HostName = ConnectionManager.RabbitMQIpAddress
             };
             RabbitReceiver receiver = new();
-            receiver.Receiver("Get", standardConnectionFac, HandleGetRequest);
-            receiver.Receiver("Delete", standardConnectionFac, HandleDeleteRequest);
+
+
+            switch (variable)
+            {
+                case "get":
+                    receiver.Receiver("Get", standardConnectionFac, HandleGetRequest);
+                    break;
+                case "delete":
+                    receiver.Receiver("Delete", standardConnectionFac, HandleDeleteRequest);
+                    break;
+                default:
+                    Console.WriteLine("No argument was provided. Please provide which queue program should handle!");
+                    break;
+            }
         }
 
         
 
         private void HandleDeleteRequest(string message)
         {
-            
+            int.TryParse(message.ToString(), out int result);
+            using (PostGreConn conn = new())
+            {
+                conn.DeletePokedexEntryById(result).Wait();
+            }
         }
 
         public void HandleGetRequest(string message)

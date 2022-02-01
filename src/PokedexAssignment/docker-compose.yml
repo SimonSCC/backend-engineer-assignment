@@ -15,11 +15,22 @@ services:
         context: .
         dockerfile: GatewayServiceAPI/Dockerfile
 
-
-   pokedexservice:
-    image: ${DOCKER_REGISTRY-}pokedexservice
+   pokedexserviceget:
+    container_name: getPokedex
     network_mode: host
     build:
         context: .
         dockerfile: PokedexService/Dockerfile
+    environment: 
+        VAR1: "get"
+
+   pokedexservicedelete:
+     container_name: deletePokedex
+     network_mode: host
+     build:
+        context: .
+        dockerfile: PokedexService/Dockerfile
+     environment: 
+        VAR1: "delete"
+       
 

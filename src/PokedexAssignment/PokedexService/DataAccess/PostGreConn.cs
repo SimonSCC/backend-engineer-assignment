@@ -77,6 +77,36 @@ namespace PokedexService.DataAccess
             }
         }
 
+        public async Task DeletePokedexEntryById(int id)
+        {
+            try
+            {
+                PokedexEntry toDelete = GetPokedexEntryById(id);
+                await connection.OpenAsync();
+                using (NpgsqlCommand cmd = new NpgsqlCommand($"delete from pokedexentry WHERE entryid = {toDelete.Id}", connection))
+                {
+                    int affectedRows = await cmd.ExecuteNonQueryAsync();
+                }
+                using (NpgsqlCommand cmd = new NpgsqlCommand($"delete from pokemonbase WHERE PokemonId = {toDelete.Base.Id}", connection))
+                {
+                    int affectedRows = await cmd.ExecuteNonQueryAsync();
+                }
+                using (NpgsqlCommand cmd = new NpgsqlCommand($"delete from pokemonname WHERE NameId = {toDelete.Name.Id}", connection))
+                {
+                    int affectedRows = await cmd.ExecuteNonQueryAsync();
+                }
+            }
+            catch (Exception e)
+            {
+
+                Console.WriteLine(e.Message);
+            }
+            finally
+            {
+                await connection.CloseAsync();
+            }
+        }
+
         private PokemonBase GetPokemonBaseById(int id)
         {
             using (NpgsqlCommand cmd = new NpgsqlCommand($"select * from pokemonbase WHERE PokemonId = {id}", connection))
@@ -87,6 +117,7 @@ namespace PokedexService.DataAccess
                     {
                         return new PokemonBase()
                         {
+                            Id = reader.GetInt32(0),
                             HP = reader.GetInt32(1),
                             Attack = reader.GetInt32(2),
                             Defense = reader.GetInt32(3),
@@ -122,6 +153,7 @@ namespace PokedexService.DataAccess
                     {
                         return new Name()
                         {
+                            Id = reader.GetInt32(0),
                             English = reader.GetString(1),
                             Japanese = reader.GetString(2),
                             Chinese = reader.GetString(3),
