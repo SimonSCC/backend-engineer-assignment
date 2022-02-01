@@ -1,30 +1,6 @@
 version: '3.4'
 
 services:
-  clientapp:
-    image: clientapp:dev
-    container_name: ClientApp
-    build:
-      target: base
-      labels:
-        com.microsoft.created-by: "visual-studio"
-        com.microsoft.visual-studio.project-name: "ClientApp"
-    environment:
-      - NUGET_FALLBACK_PACKAGES=/root/.nuget/fallbackpackages;/root/.nuget/fallbackpackages2;/root/.nuget/fallbackpackages3
-    volumes:
-      - C:\Users\Simon\source\repos\backend-engineer-assignment\src\PokedexAssignment\ClientApp:/app
-      - C:\Users\Simon\vsdbg\vs2017u5:/remote_debugger:rw
-      - C:\Users\Simon\.nuget\packages\:/root/.nuget/packages:ro
-      - C:\Program Files (x86)\Microsoft Visual Studio\Shared\NuGetPackages:/root/.nuget/fallbackpackages:ro
-      - C:\Program Files (x86)\Microsoft\Xamarin\NuGet\:/root/.nuget/fallbackpackages2:ro
-      - C:\Program Files\dotnet\sdk\NuGetFallbackFolder:/root/.nuget/fallbackpackages3:ro
-    entrypoint: tail -f /dev/null
-    labels:
-      com.microsoft.visualstudio.debuggee.program: "dotnet"
-      com.microsoft.visualstudio.debuggee.arguments: " --additionalProbingPath /root/.nuget/packages --additionalProbingPath /root/.nuget/fallbackpackages --additionalProbingPath /root/.nuget/fallbackpackages2 --additionalProbingPath /root/.nuget/fallbackpackages3  \"/app/bin/Debug/net5.0/ClientApp.dll\""
-      com.microsoft.visualstudio.debuggee.workingdirectory: "/app"
-      com.microsoft.visualstudio.debuggee.killprogram: "/bin/sh -c \"if PID=$$(pidof dotnet); then kill $$PID; fi\""
-    tty: true
   gatewayserviceapi:
     image: gatewayserviceapi:dev
     container_name: GatewayServiceAPI_1
@@ -55,7 +31,6 @@ services:
       com.microsoft.visualstudio.debuggee.workingdirectory: "/app"
       com.microsoft.visualstudio.debuggee.killprogram: "/bin/sh -c \"if PID=$$(pidof dotnet); then kill $$PID; fi\""
     tty: true
-
   pokedexservicedelete:
     image: pokedexservicedelete:dev
     build:

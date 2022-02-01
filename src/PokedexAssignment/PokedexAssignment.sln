@@ -5,8 +5,6 @@ VisualStudioVersion = 16.0.32002.261
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GatewayServiceAPI", "GatewayServiceAPI\GatewayServiceAPI.csproj", "{E60DE6E5-741A-4F5A-A4D0-4F703284C938}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClientApp", "ClientApp\ClientApp.csproj", "{A5AED844-6EE4-4FBF-A273-8AE34A4B5F28}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PokedexService", "PokedexService\PokedexService.csproj", "{B3A28CDE-6E0E-4D8E-B2C3-1E4AAFC5AE71}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedLibary", "SharedLibary\SharedLibary.csproj", "{D901348F-4533-4712-B7E0-6AD13022333E}"
@@ -23,10 +21,6 @@ Global
 		{E60DE6E5-741A-4F5A-A4D0-4F703284C938}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E60DE6E5-741A-4F5A-A4D0-4F703284C938}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E60DE6E5-741A-4F5A-A4D0-4F703284C938}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A5AED844-6EE4-4FBF-A273-8AE34A4B5F28}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A5AED844-6EE4-4FBF-A273-8AE34A4B5F28}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A5AED844-6EE4-4FBF-A273-8AE34A4B5F28}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A5AED844-6EE4-4FBF-A273-8AE34A4B5F28}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B3A28CDE-6E0E-4D8E-B2C3-1E4AAFC5AE71}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B3A28CDE-6E0E-4D8E-B2C3-1E4AAFC5AE71}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B3A28CDE-6E0E-4D8E-B2C3-1E4AAFC5AE71}.Release|Any CPU.ActiveCfg = Release|Any CPU

@@ -1,12 +1,6 @@
 version: '3.4'
 
 services:
-   clientapp:
-    image: ${DOCKER_REGISTRY-}clientapp
-    build:
-        context: .
-        dockerfile: ClientApp/Dockerfile
-
    gatewayserviceapi:
     image: ${DOCKER_REGISTRY-}gatewayserviceapi
     ports:

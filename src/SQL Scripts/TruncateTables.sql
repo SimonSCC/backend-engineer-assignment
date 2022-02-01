@@ -1,3 +1,1 @@
-TRUNCATE pokedexentry CASCADE;
-TRUNCATE pokemonbase CASCADE;
-TRUNCATE pokemonname CASCADE;
+TRUNCATE ONLY pokedexentry, pokemonbase, pokemonname RESTART IDENTITY ;

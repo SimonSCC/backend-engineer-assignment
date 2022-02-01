@@ -18,7 +18,7 @@ namespace PokedexService.DataAccess
 
         public PostGreConn()
         {
-            connection = new($"Server={ConnectionManager.PostgreSQLLocalhostDatabase};Port=5432;Database=PokeDex;User Id=postgres;password=discotek;");
+            connection = new(ConnectionManager.PostgreSQLConnString);
         }
 
         public void TestConnection()
@@ -47,7 +47,7 @@ namespace PokedexService.DataAccess
             try
             {
                 connection.Open();
-                using (NpgsqlCommand cmd = new NpgsqlCommand($"select * from pokedexentry WHERE EntryID = {id}", connection))
+                using (NpgsqlCommand cmd = new NpgsqlCommand($"select * from pokedexentry WHERE EntryId = {id}", connection))
                 {
                     using (NpgsqlDataReader reader = cmd.ExecuteReader())
                     {
@@ -109,6 +109,10 @@ namespace PokedexService.DataAccess
 
         public async Task UpdatePokedexEntry(PokedexEntry result)
         {
+            if (result.Id == 0 || result.Base.Id == 0 || result.Name.Id == 0)
+            {
+                Console.WriteLine("Id not provided, returning");
+            }
             try
             {
                 connection.Open();
@@ -130,6 +134,11 @@ namespace PokedexService.DataAccess
                 using (NpgsqlCommand cmd = new NpgsqlCommand($"update pokemonbase " +
                     $"SET HP = @hp, Attack = @attack, Defense = @defense, SpAttack = @spattack, SpDefense = @spdefence, Speed = @speed WHERE PokemonId = @pokemonid", connection))
                 {
+                    var parameterid = cmd.CreateParameter();
+                    parameterid.ParameterName = "pokemonid";
+                    parameterid.Value = result.Base.Id;
+                    cmd.Parameters.Add(parameterid);
+
                     var parameter = cmd.CreateParameter();
                     parameter.ParameterName = "hp";
                     parameter.Value = result.Base.HP;
@@ -166,6 +175,11 @@ namespace PokedexService.DataAccess
                 using (NpgsqlCommand cmd = new NpgsqlCommand($"update pokemonname " +
                    $"SET English = @english, Japanese = @japanese, Chinese = @chinese, French = @french WHERE NameId = @nameid", connection))
                 {
+                    var parameterid = cmd.CreateParameter();
+                    parameterid.ParameterName = "nameid";
+                    parameterid.Value = result.Name.Id;
+                    cmd.Parameters.Add(parameterid);
+
                     var parameter = cmd.CreateParameter();
                     parameter.ParameterName = "english";
                     parameter.Value = result.Name.English;
